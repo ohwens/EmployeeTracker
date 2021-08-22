@@ -1,7 +1,25 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-const connection = require("./db/connection.js");
-require("console.table");
+require("console.table")
+
+const connection = mysql.createConnection({
+    host: 'localhost',
+  
+    // Your port; if not 3306
+    port: 3306,
+  
+    // Your username
+    user: 'root',
+  
+    // Be sure to update with your own MySQL password!
+    password: '1qaz!QAZ',
+    database: 'employee_tracker',
+  });
+  
+  connection.connect((err) => {
+    if (err) throw err;
+    runSearch();
+  });
 
 const employeeTracker = () => {
     inquirer
@@ -62,13 +80,14 @@ const employeeTracker = () => {
   };
 
   const viewEmployees = () => {
-    const query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee LEFT JOIN role ON role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id;"
-    connection.query(query, (err, res) => {
-      if (err) throw err;
-      console.table(res)
-      employeeTracker();
-    });
-  
+      console.log("made it here 1")
+      const query = "SELECT employee.id from employee";
+      console.log("made it here 2")
+      connection.query(query, (err, res) => {
+          console.log("made it here 3")
+          console.table(res);
+          employeeTracker();
+      });
   };
 
   employeeTracker();
