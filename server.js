@@ -80,7 +80,7 @@ const employeeTracker = () => {
   };
 
   const viewEmployees = () => {
-      const query = "SELECT employee.id from employee";
+      const query = "SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name FROM employee LEFT JOIN role ON role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id;";
       connection.query(query, (err, res) => {
           console.table(res);
           employeeTracker();
