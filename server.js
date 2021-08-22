@@ -18,7 +18,7 @@ const connection = mysql.createConnection({
   
   connection.connect((err) => {
     if (err) throw err;
-    runSearch();
+    employeeTracker();
   });
 
 const employeeTracker = () => {
@@ -80,11 +80,8 @@ const employeeTracker = () => {
   };
 
   const viewEmployees = () => {
-      console.log("made it here 1")
       const query = "SELECT employee.id from employee";
-      console.log("made it here 2")
       connection.query(query, (err, res) => {
-          console.log("made it here 3")
           console.table(res);
           employeeTracker();
       });
