@@ -45,11 +45,11 @@ const employeeTracker = () => {
             break;
   
           case "View All Employees By Role":
-            employeesByRole();
+            viewEmployeesByRole();
             break;
   
           case "View All Employees By Department":
-            employeeByDept();
+            viewEmployeeByDept();
             break;
   
           case "Add Employee":
@@ -85,6 +85,24 @@ const employeeTracker = () => {
           console.table(res);
           employeeTracker();
       });
+  };
+
+  const viewEmployeesByRole = () => {
+    const query = "SELECT employee.id, employee.first_name, employee.last_name, role.title FROM employee LEFT JOIN role ON role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id;";
+    connection.query(query, (err, res) => {
+      if (err) throw err;
+      console.table(res)
+      employeeTracker();
+    });
+  };
+
+  const viewEmployeeByDept = () => {
+    const query = `SELECT employee.id, employee.first_name, employee.last_name, department.name FROM employee LEFT JOIN role ON role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id;`;
+    connection.query(query, (err, res) => {
+      if (err) throw err;
+      console.table(res)
+      employeeTracker(); 
+    });
   };
 
   employeeTracker();
