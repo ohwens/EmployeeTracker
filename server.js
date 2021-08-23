@@ -28,8 +28,8 @@ const employeeTracker = () => {
         message: "What would you like to do?",
         choices: [
           "View All Employees",
-          "View All Employees By Role",
-          "View All Employees By Department",
+          "View All Roles",
+          "View All Departments",
           "Add Employee",
           "Add Role",
           "Add Department",
@@ -43,12 +43,12 @@ const employeeTracker = () => {
             viewEmployees();
             break;
   
-          case "View All Employees By Role":
-            viewEmployeesByRole();
+          case "View All Roles":
+            viewRoles();
             break;
   
-          case "View All Employees By Department":
-            viewEmployeeByDept();
+          case "View All Departments":
+            viewDepartments();
             break;
   
           case "Add Employee":
@@ -86,8 +86,8 @@ const employeeTracker = () => {
       });
   };
 
-  const viewEmployeesByRole = () => {
-    const query = "SELECT employee.id, employee.first_name, employee.last_name, role.title FROM employee LEFT JOIN role ON role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id;";
+  const viewRoles = () => {
+    const query = "SELECT * from role";
     connection.query(query, (err, res) => {
       if (err) throw err;
       console.table(res)
@@ -95,8 +95,8 @@ const employeeTracker = () => {
     });
   };
 
-  const viewEmployeeByDept = () => {
-    const query = `SELECT employee.id, employee.first_name, employee.last_name, department.name FROM employee LEFT JOIN role ON role.id = employee.role_id LEFT JOIN department ON department.id = role.department_id;`;
+  const viewDepartments = () => {
+    const query = `SELECT * from department`;
     connection.query(query, (err, res) => {
       if (err) throw err;
       console.table(res)
@@ -165,11 +165,9 @@ const employeeTracker = () => {
         },        
       ])
       .then((answer) => {
-        console.log(answer)
         const title = answer.Title;``
         const salary = answer.Salary;
         const departmentID = answer.Department;
-        console.log(title, salary, departmentID)
         const query = `INSERT INTO role (title, salary, department_id) VALUES ("${title}", "${salary}", "${departmentID}")`;
         connection.query(query, function(err, res) {
           if (err) throw err;
@@ -177,6 +175,56 @@ const employeeTracker = () => {
           employeeTracker();
         });
       });
+  };
+
+  const addDepartment = () => {
+    inquirer
+      .prompt([
+        {
+          name: "Name",
+          type: "input",
+          message: "What is the Name of the Department you'd like to add?",
+        },      
+      ])
+      .then((answer) => {
+        const name = answer.Name;
+        const query = `INSERT INTO department (name) VALUES ("${name}")`;
+        connection.query(query, function(err, res) {
+          if (err) throw err;
+          console.table(res);
+          employeeTracker();
+        });
+      });
+  };
+
+  const updateEmployeeRole = () => {
+    inquirer
+      .prompt([
+        {
+          name: "Employee",
+          type: "input",
+          message: "Which Employee ID would you like to update?"
+        },
+        {
+          name: "Role",
+          type: "input",
+          message: "What is the new Role ID?"
+        },
+      ])
+      .then((answer) => {
+        const employee = answer.Employee;
+        const role = answer.Role;
+        const query = connection.query(`UPDATE employee SET role_id = ("${Role}") where id = ("${Employee}");
+      })
+     WHERE ?`, (err, res) => {
+      if (err) throw err;
+      console.log(
+        `${res.affectedRows} role for the employee has been updated!\n`
+      );
+    });
+  
+    // logs the actual query being run
+    console.log(query.sql);
   };
 
   employeeTracker();
