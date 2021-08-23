@@ -212,19 +212,18 @@ const employeeTracker = () => {
         },
       ])
       .then((answer) => {
-        const employee = answer.Employee;
-        const role = answer.Role;
-        const query = connection.query(`UPDATE employee SET role_id = ("${Role}") where id = ("${Employee}");
-      })
-     WHERE ?`, (err, res) => {
-      if (err) throw err;
+        let employee = answer.Employee;
+        let role = answer.Role;
+        const query = `UPDATE employee SET role_id = ${role} where id = ${employee}`;
+        connection.query(query, function(err, res) {
+          if (err) throw err;
+          console.table(res);
+          employeeTracker();
+        });
       console.log(
         `${res.affectedRows} role for the employee has been updated!\n`
       );
     });
-  
-    // logs the actual query being run
-    console.log(query.sql);
   };
 
   employeeTracker();
