@@ -18,7 +18,6 @@ const connection = mysql.createConnection({
   
   connection.connect((err) => {
     if (err) throw err;
-    employeeTracker();
   });
 
 const employeeTracker = () => {
@@ -111,22 +110,22 @@ const employeeTracker = () => {
         {
           name: "firstName",
           type: "input",
-          message: "What is the employee's first name?",
+          message: "What is the Employee's first name?",
         },
         {
           name: "lastName",
           type: "input",
-          message: "What is the employee's last name?",
+          message: "What is the Employee's last name?",
         },
         {
           name: "roleName",
           type: "input",
-          message: "What is the Employee's Role?",
+          message: "What is the Employee's Role ID?",
         },
         {
           name: "managerID",
           type: "input",
-          message: "What is the Employees Manager ID?",
+          message: "What is the Employee's Manager ID?",
         }
       ])
       .then((answer) => {
@@ -157,17 +156,17 @@ const employeeTracker = () => {
         {
           name: "Salary",
           type: "input",
-          message: "What is the Salary you would like to add?",
+          message: "What is the Salary of this role?",
         },
         {
           name: "Department",
           type: "input",
-          message: "What is the Department you would like to add?",
+          message: "What is the Department ID of this role?",
         },        
       ])
       .then((answer) => {
         console.log(answer)
-        const title = answer.Title;
+        const title = answer.Title;``
         const salary = answer.Salary;
         const departmentID = answer.Department;
         console.log(title, salary, departmentID)
