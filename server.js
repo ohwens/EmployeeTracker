@@ -105,4 +105,79 @@ const employeeTracker = () => {
     });
   };
 
+  const addEmployee = () => {
+    inquirer
+      .prompt([
+        {
+          name: "firstName",
+          type: "input",
+          message: "What is the employee's first name?",
+        },
+        {
+          name: "lastName",
+          type: "input",
+          message: "What is the employee's last name?",
+        },
+        {
+          name: "roleName",
+          type: "input",
+          message: "What is the Employee's Role?",
+        },
+        {
+          name: "managerID",
+          type: "input",
+          message: "What is the Employees Manager ID?",
+        }
+      ])
+      .then((answer) => {
+        let firstName = answer.firstName;
+        let lastName = answer.lastName;
+        let roleName = answer.roleName;
+        let managerID = answer.managerID;
+        const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE ('${firstName}', '${lastName}', '${roleName}', '${managerID}')`;
+        connection.query(query, (err, res) => {
+          if (err) throw err;
+          console.table(res);
+          employeeTracker();
+        });
+        
+      });
+    
+  };
+
+  const addRole = () => {
+
+    inquirer
+      .prompt([
+        {
+          name: "Title",
+          type: "input",
+          message: "What is the Title of the Role you would like to add?",
+        },
+        {
+          name: "Salary",
+          type: "input",
+          message: "What is the Salary you would like to add?",
+        },
+        {
+          name: "Department",
+          type: "input",
+          message: "What is the Department you would like to add?",
+        },        
+      ])
+      .then((answer) => {
+        console.log(answer)
+        const title = answer.Title;
+        const salary = answer.Salary;
+        const departmentID = answer.Department;
+        console.log(title, salary, departmentID)
+        const query = `INSERT INTO role (title, salary, department_id) VALUES ("${title}", "${salary}", "${departmentID}")`;
+        connection.query(query, function(err, res) {
+          if (err) throw err;
+          console.table(res);
+          employeeTracker();
+        });
+      });
+  };
+
   employeeTracker();
